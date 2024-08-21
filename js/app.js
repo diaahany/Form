@@ -5,11 +5,16 @@ const lastname = document.getElementById('lastname');
 const email = document.getElementById('email');
 const password = document.getElementById('password');
 const password2 = document.getElementById('password2');
+const check = document.getElementById('checkout');
 
 form.addEventListener('submit', e => {
   e.preventDefault();
 
-  validateInputs();
+  if(validateInputs()){
+    console.log('Successfully validated');
+  }else
+    console.log('Failed validated');
+
 });
 
 const setError = (element, message) => {
@@ -42,55 +47,70 @@ const validateInputs = () => {
   const emailValue = email.value.trim();
   const passwordValue = password.value.trim();
   const password2Value = password2.value.trim();
+  const checkValue = check.checked;
+
+  let isValid = true;
 
   if(firstnameValue === '') {
     setError(firstname, 'First Name is required');
+    isValid = false;
   } else {
     setSuccess(firstname);
   }
   if(lastnameValue === '') {
     setError(lastname, 'Last name is required');
+    isValid = false;
   } else {
     setSuccess(lastname);
   }
   if(usernameValue === '') {
     setError(username, 'User Name is required');
+    isValid = false;
   } else {
     setSuccess(username);
   }
 
   if(emailValue === '') {
     setError(email, 'Email is required');
+    isValid = false;
   } else if (!isValidEmail(emailValue)) {
     setError(email, 'Provide a valid email address');
+    isValid = false;
   } else {
     setSuccess(email);
   }
 
   if(passwordValue === '') {
     setError(password, 'Password is required');
+    isValid = false;
   } else if (passwordValue.length < 8 ) {
     setError(password, 'Password must be at least 8 character.')
+    isValid = false;
   } else {
     setSuccess(password);
   }
 
   if(password2Value === '') {
     setError(password2, 'Please confirm your password');
+    isValid = false;
   } else if (password2Value !== passwordValue) {
     setError(password2, "Passwords doesn't match");
+    isValid = false;
   } else {
     setSuccess(password2);
   }
 
+  if(!checkValue){
+    setError(check,'required')
+    isValid = false;
+  }
+  else {
+    setSuccess(check);
+  }
 
+  return isValid
   // Print the data to the console
-  console.log('First Name:', firstnameValue);
-  console.log('Last Name:', lastnameValue);
-  console.log('User Name:', usernameValue);
-  console.log('Email:', emailValue);
-  console.log('Password:', passwordValue);
-  console.log('Confirm Password:', password2Value);
+
 };
 
 
